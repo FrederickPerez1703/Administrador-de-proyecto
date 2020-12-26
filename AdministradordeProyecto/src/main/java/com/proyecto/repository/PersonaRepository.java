@@ -6,5 +6,6 @@ import com.proyecto.entidad.Persona;
 
 @Repository
 public interface PersonaRepository extends JpaRepository<Persona, Long>{
-	boolean findByEmail(String email);
+	Persona findByEmail(String email);
+	Persona findByUsuario(String usuario);
 }
