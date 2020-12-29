@@ -8,7 +8,5 @@ class AdministradordeProyectoApplicationTests {
 	
 	@Test
 	void contextLoads() {
-	
 	}
-
 }
