@@ -17,4 +17,9 @@ public class ExceptionConfig {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.body(e.getMessage());
 	}
+	
+	public ResponseEntity<?> authenticacion(Exception e){
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(e.getMessage());
+	}
 }

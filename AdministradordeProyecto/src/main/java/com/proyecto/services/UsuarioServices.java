@@ -8,10 +8,11 @@ import com.proyecto.repository.UsuarioRepository;
 
 @Service
 public class UsuarioServices {
-	
+
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+	private Usuario usuario;
+
 	public void createUsuario(Persona persona) {
 		Usuario usuario = new Usuario();
 		usuario.setUsuario(persona.getUsuario());
@@ -19,5 +20,13 @@ public class UsuarioServices {
 		usuario.setPersona(persona);
 		usuario.setRol("USER");
 		usuarioRepository.save(usuario);
+	}
+
+	public void usuariologin(String usuario) {
+		this.usuario = usuarioRepository.findByUsuario(usuario);
+	}
+
+	public Usuario getUsuUsuario() {
+		return this.usuario;
 	}
 }

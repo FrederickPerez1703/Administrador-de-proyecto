@@ -38,6 +38,8 @@ public class SecuridadConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests().antMatchers("/Autenticacion/**").permitAll()
-				.antMatchers("/", "/logout").permitAll().anyRequest().authenticated();
+				.antMatchers("/Proyecto/CrearProyecto").authenticated()
+				.antMatchers("/Proyecto/Lista/**").authenticated()
+				.antMatchers("/", "/logout").permitAll();
 	}
 }

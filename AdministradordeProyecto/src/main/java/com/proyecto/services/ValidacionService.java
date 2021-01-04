@@ -14,8 +14,8 @@ public class ValidacionService {
 	private PersonaRepository personaRepository;
 
 	public boolean isValidarPersona(Persona persona) {
-		if (persona.getNombre().equals(null) || persona.getApellido().equals(null) || persona.getEmail().equals(null)
-				|| persona.getUsuario().equals(null) || persona.getPassword().equals(null)) {
+		if (persona.getNombre() == null || persona.getApellido() == null || persona.getEmail() == null
+				|| persona.getUsuario() == null || persona.getPassword() == null) {
 			return false;
 		} else if (persona.getNombre().isBlank() || persona.getApellido().isBlank() || persona.getEmail().isBlank()
 				|| persona.getUsuario().isBlank() || persona.getPassword().isBlank()) {
@@ -32,8 +32,8 @@ public class ValidacionService {
 	}
 
 	public boolean isValidarLoginUsuario(LoginUsuario loginUsuario) {
-		if (loginUsuario.getPassword().equals(null) || loginUsuario.getPassword().isBlank()
-				|| loginUsuario.getUsuario().equals(null) || loginUsuario.getUsuario().isBlank()) {
+		if (loginUsuario.getPassword() == null || loginUsuario.getPassword().isBlank()
+				|| loginUsuario.getUsuario() == null || loginUsuario.getUsuario().isBlank()) {
 			throw new BadRequestException("Algo a salio mal el USUARIO O PASSWORD es incorrecto");
 		}
 		return true;
@@ -51,6 +51,13 @@ public class ValidacionService {
 		if (persona.getNombre().length() > 50 || persona.getApellido().length() > 50
 				|| persona.getEmail().length() > 100
 				|| (persona.getUsuario().length() > 50 || persona.getPassword().length() > 100)) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isValidarVariableUrl(String nombreProyecto) {
+		if (nombreProyecto == null || nombreProyecto.isBlank()) {
 			return false;
 		}
 		return true;

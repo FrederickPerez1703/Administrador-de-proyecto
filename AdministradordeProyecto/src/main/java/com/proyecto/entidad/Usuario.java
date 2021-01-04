@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
@@ -17,13 +19,14 @@ import lombok.Data;
 public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id; 
-	@Column(name= "Usuario")
+	private Long id;
+	@Column(name = "Usuario")
 	private String usuario;
 	@Column(name = "Password")
-	private String password; 
+	@JsonIgnore
+	private String password;
 	@OneToOne
-	@JoinColumn(name = "Persona" , referencedColumnName = "id")
+	@JoinColumn(name = "Persona", referencedColumnName = "id")
 	private Persona persona;
-	private String rol; 
+	private String rol;
 }

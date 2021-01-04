@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyecto.entidad.Persona;
 import com.proyecto.excepciones.BadRequestException;
 import com.proyecto.security.LoginUsuario;
+import com.proyecto.security.UsuarioPrincipal;
 import com.proyecto.services.PersonaServices;
 import com.proyecto.services.UsuarioServices;
 import com.proyecto.services.ValidacionService;
@@ -30,6 +31,7 @@ public class RestAutenticacion {
 	private UsuarioServices usuarioServices;
 	@Autowired(required = true)
 	private AuthenticationManager authenticationManager;
+	private UsuarioPrincipal usuarioPrincipal;
 
 	@PostMapping("/Registro")
 	public ResponseEntity<?> createPersona(@RequestBody Persona persona) {
@@ -47,8 +49,10 @@ public class RestAutenticacion {
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginUsuario.getUsuario(), loginUsuario.getPassword()));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			return ResponseEntity.status(HttpStatus.OK).body("Bienvenido");
+			usuarioPrincipal = (UsuarioPrincipal) authentication.getPrincipal();
+			usuarioServices.usuariologin(usuarioPrincipal.getUsername());
+			return ResponseEntity.status(HttpStatus.OK).body("Bienvenido ".concat(usuarioPrincipal.getUsername()));
 		}
-		throw new BadRequestException("No se permite valores nulos");
+		throw new BadRequestException("No se permite valores nulos(LOL)");
 	}
 }
