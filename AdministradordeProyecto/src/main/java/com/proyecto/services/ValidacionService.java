@@ -20,9 +20,9 @@ public class ValidacionService {
 		} else if (persona.getNombre().isBlank() || persona.getApellido().isBlank() || persona.getEmail().isBlank()
 				|| persona.getUsuario().isBlank() || persona.getPassword().isBlank()) {
 			throw new BadRequestException("No se permite valores vacios");
-		} else if (ExiteEmail(persona.getEmail()) != null) {
+		} else if (exiteEmail(persona.getEmail()) != null) {
 			throw new BadRequestException("Este E-mail Existe");
-		} else if (ExiteUsuario(persona.getUsuario()) != null) {
+		} else if (exiteUsuario(persona.getUsuario()) != null) {
 			throw new BadRequestException("Este Usuario Existe");
 		} else if (!isValidrLongitudCampos(persona)) {
 			throw new BadRequestException("Haz sobre pasado el limite de este campo");
@@ -32,6 +32,7 @@ public class ValidacionService {
 	}
 
 	public boolean isValidarLoginUsuario(LoginUsuario loginUsuario) {
+
 		if (loginUsuario.getPassword() == null || loginUsuario.getPassword().isBlank()
 				|| loginUsuario.getUsuario() == null || loginUsuario.getUsuario().isBlank()) {
 			throw new BadRequestException("Algo a salio mal el USUARIO O PASSWORD es incorrecto");
@@ -39,11 +40,11 @@ public class ValidacionService {
 		return true;
 	}
 
-	private Persona ExiteEmail(String email) {
+	private Persona exiteEmail(String email) {
 		return personaRepository.findByEmail(email);
 	}
 
-	private Persona ExiteUsuario(String usuario) {
+	private Object exiteUsuario(String usuario) {
 		return personaRepository.findByUsuario(usuario);
 	}
 

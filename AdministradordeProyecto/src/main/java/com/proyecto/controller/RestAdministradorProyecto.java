@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.proyecto.entidad.Proyecto;
 import com.proyecto.excepciones.BadRequestException;
@@ -21,7 +22,12 @@ public class RestAdministradorProyecto {
 	private ProyectoServices proyectoServices;
 	@Autowired
 	private ValidacionService validacionService;
-
+	
+	@GetMapping("/Home")
+	@ResponseBody
+	public String home() {
+		return "Welcome";
+	}
 	@GetMapping("/Lista/{nombreProyecto}")
 	public ResponseEntity<?> proyecto(@PathVariable String nombreProyecto) {
 		if (validacionService.isValidarVariableUrl(nombreProyecto)) {

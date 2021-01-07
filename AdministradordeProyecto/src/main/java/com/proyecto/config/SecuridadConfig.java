@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 import com.proyecto.services.MyUserDetailsService;
 
 @Configuration
@@ -40,6 +42,8 @@ public class SecuridadConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable().authorizeRequests().antMatchers("/Autenticacion/**").permitAll()
 				.antMatchers("/Proyecto/CrearProyecto").authenticated()
 				.antMatchers("/Proyecto/Lista/**").authenticated()
-				.antMatchers("/", "/logout").permitAll();
+				.antMatchers("/Proyecto/Home", "/logout").permitAll()
+				.and()
+				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/Proyecto/Home");
 	}
 }

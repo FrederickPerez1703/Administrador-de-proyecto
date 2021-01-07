@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import com.proyecto.services.ValidacionService;
 
 @RestController
 @RequestMapping("/Autenticacion")
+@CrossOrigin(origins = "http://localhost:8081")
 public class RestAutenticacion {
 
 	@Autowired
@@ -52,7 +54,7 @@ public class RestAutenticacion {
 			usuarioPrincipal = (UsuarioPrincipal) authentication.getPrincipal();
 			usuarioServices.usuariologin(usuarioPrincipal.getUsername());
 			return ResponseEntity.status(HttpStatus.OK).body("Bienvenido ".concat(usuarioPrincipal.getUsername()));
-		}
-		throw new BadRequestException("No se permite valores nulos(LOL)");
+		}else
+		throw new BadRequestException("No se permite valores nulos");
 	}
 }
