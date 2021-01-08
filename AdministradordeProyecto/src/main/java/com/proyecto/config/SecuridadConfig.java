@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
+import com.proyecto.excepciones.CustomAuthenticationEntryPoint;
 import com.proyecto.services.MyUserDetailsService;
 
 @Configuration
@@ -25,6 +25,9 @@ public class SecuridadConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private MyUserDetailsService myUserDetailsService;
+	
+	@Autowired
+	private CustomAuthenticationEntryPoint authenticationEntryPoint;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -39,11 +42,15 @@ public class SecuridadConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/Autenticacion/**").permitAll()
+		http.csrf().disable().authorizeRequests().antMatchers("/Autenticacion/Registro").permitAll()
 				.antMatchers("/Proyecto/CrearProyecto").authenticated()
 				.antMatchers("/Proyecto/Lista/**").authenticated()
 				.antMatchers("/Proyecto/Home", "/logout").permitAll()
 				.and()
-				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/Proyecto/Home");
+				.cors()
+				.and()
+				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/Proyecto/Home")
+				.and()
+				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);		
 	}
 }

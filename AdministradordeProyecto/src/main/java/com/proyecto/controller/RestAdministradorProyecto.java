@@ -28,6 +28,7 @@ public class RestAdministradorProyecto {
 	public String home() {
 		return "Welcome";
 	}
+	
 	@GetMapping("/Lista/{nombreProyecto}")
 	public ResponseEntity<?> proyecto(@PathVariable String nombreProyecto) {
 		if (validacionService.isValidarVariableUrl(nombreProyecto)) {

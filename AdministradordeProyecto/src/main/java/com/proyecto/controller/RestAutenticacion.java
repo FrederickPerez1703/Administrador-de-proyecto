@@ -7,7 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,6 @@ import com.proyecto.services.ValidacionService;
 
 @RestController
 @RequestMapping("/Autenticacion")
-@CrossOrigin(origins = "http://localhost:8081")
 public class RestAutenticacion {
 
 	@Autowired
@@ -46,7 +45,7 @@ public class RestAutenticacion {
 	}
 
 	@PostMapping("/Login")
-	public ResponseEntity<?> login(@RequestBody LoginUsuario loginUsuario) {
+	public ResponseEntity<?> login(@RequestBody LoginUsuario loginUsuario) throws UsernameNotFoundException {
 		if (validacionService.isValidarLoginUsuario(loginUsuario)) {
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginUsuario.getUsuario(), loginUsuario.getPassword()));
@@ -54,7 +53,7 @@ public class RestAutenticacion {
 			usuarioPrincipal = (UsuarioPrincipal) authentication.getPrincipal();
 			usuarioServices.usuariologin(usuarioPrincipal.getUsername());
 			return ResponseEntity.status(HttpStatus.OK).body("Bienvenido ".concat(usuarioPrincipal.getUsername()));
-		}else
-		throw new BadRequestException("No se permite valores nulos");
+		} else
+			throw new BadRequestException("No se permite valores nulos");
 	}
 }
