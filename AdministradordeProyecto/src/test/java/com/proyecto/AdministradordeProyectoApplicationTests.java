@@ -2,13 +2,11 @@ package com.proyecto;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
 @SpringBootTest
-class AdministradordeProyectoApplicationTests {
+public class AdministradordeProyectoApplicationTests {
 	
 	@Test
-	void contextLoads() {
-	
+	void prueba() {
+		System.out.print("jaja");
 	}
-
 }

@@ -5,26 +5,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.ToString;
 
-@Entity
 @Data
-@ToString
-@Table(name = "persona")
-public class Persona {
+@Entity
+@Table(name = "usuario")
+public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "Nombre")
-	private String nombre;
-	@Column(name = "Apellido")
-	private String apellido;
-	@Column(name = "Email")
-	private String email;
 	@Column(name = "Usuario")
 	private String usuario;
 	@Column(name = "Password")
+	@JsonIgnore
 	private String password;
+	@OneToOne
+	@JoinColumn(name = "Persona", referencedColumnName = "id")
+	private Persona persona;
+	private String rol;
 }
