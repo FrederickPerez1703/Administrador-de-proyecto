@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.proyecto.controller.RestAdministradorProyecto;
 import com.proyecto.controller.RestAutenticacion;
@@ -17,8 +18,10 @@ import com.proyecto.services.ValidacionService;
 
 @SpringBootTest
 public class TestGlobal {
-	@Mock
+	
+	@Autowired
 	ProyectoServices proyectoServices;
+	
 	@Mock
 	Proyecto proyecto;
 	@Mock
@@ -33,7 +36,7 @@ public class TestGlobal {
 
 	@InjectMocks
 	RestAutenticacion restAutenticacion;
-
+	
 	@BeforeEach
 	void testProyecto() {
 
@@ -57,10 +60,10 @@ public class TestGlobal {
 		Proyecto mockProyecto = new Proyecto();
 		mockProyecto.setId(1L);
 		mockProyecto.setParticipante(4);
-		mockProyecto.setComentario("Desarrolando una APP ");
+		mockProyecto.setComentario(" ");
 		mockProyecto.setFechaFinalProyecto(new Date());
 		mockProyecto.setFechaInicioProyecto(new Date());
-		mockProyecto.setNombreProyecto("Prueba");
+		mockProyecto.setNombreProyecto(" ");
 		mockProyecto.setUsuario(mockUsuario);
 		mockProyecto.setNombreProyecto("Developer");
 		Mockito.when(proyecto.toString()).thenReturn(mockProyecto.toString());
@@ -69,11 +72,11 @@ public class TestGlobal {
 
 	@Test
 	void pruebaCrearProyecto() {
-		restAdministradorProyecto.crearProyecto(proyecto);
+		//System.out.print(restAdministradorProyecto.crearProyecto(proyecto));
 	}
 
 	@Test
 	void buscarProyecto() {
-		System.out.print(restAdministradorProyecto.proyecto("prueba"));
+		//System.out.print(proyectoServices.proyecto("prueba"));
 	}
 }

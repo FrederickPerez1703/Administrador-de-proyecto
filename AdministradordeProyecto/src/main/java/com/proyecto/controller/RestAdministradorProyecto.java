@@ -22,21 +22,17 @@ public class RestAdministradorProyecto {
 	private ProyectoServices proyectoServices;
 	@Autowired
 	private ValidacionService validacionService;
-	
+
 	@GetMapping("/Home")
 	@ResponseBody
 	public String home() {
 		return "Welcome";
 	}
-	
+
 	@GetMapping("/Lista/{nombreProyecto}")
 	public ResponseEntity<?> proyecto(@PathVariable String nombreProyecto) {
 		if (validacionService.isValidarVariableUrl(nombreProyecto)) {
-			Proyecto dataProyecto = proyectoServices.proyecto(nombreProyecto);
-			if (dataProyecto == null) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Este Proyecto le pertenece a otra persona.");
-			}
-			return ResponseEntity.ok(dataProyecto);
+			return ResponseEntity.ok(proyectoServices.proyecto(nombreProyecto));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se permite valores null o Vacios");
 	}
@@ -50,5 +46,4 @@ public class RestAdministradorProyecto {
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body("Creado Con exito");
 	}
-
 }

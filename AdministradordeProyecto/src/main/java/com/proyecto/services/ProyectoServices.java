@@ -4,6 +4,8 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.proyecto.entidad.Proyecto;
+import com.proyecto.excepciones.BadRequestException;
+import com.proyecto.excepciones.NotFoundExcepcion;
 import com.proyecto.repository.ProyectoRepository;
 
 @Service
@@ -22,10 +24,14 @@ public class ProyectoServices {
 	}
 
 	public Proyecto proyecto(String nombreProyecto) {
-		Proyecto proyecto = proyectoRepository.findByNombreProyecto(nombreProyecto);
-		if (usuarioServices.getUsuUsuario().equals(proyecto.getUsuario())) {
-			return proyecto;
+		try {
+			Proyecto proyecto = proyectoRepository.findByNombreProyecto(nombreProyecto);
+			if (usuarioServices.getUsuUsuario().equals(proyecto.getUsuario())) {
+				return proyecto;
+			}
+			throw new NotFoundExcepcion("Este Proyecto no te pertenece");
+		} catch (NullPointerException e) {
+			throw new BadRequestException("Este Proyecto no existe..");
 		}
-		return null;
 	}
 }

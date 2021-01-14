@@ -6,5 +6,5 @@ import com.proyecto.entidad.Proyecto;
 
 @Repository
 public interface ProyectoRepository extends JpaRepository<Proyecto, Long>{
-	Proyecto findByNombreProyecto(String nombreProyecto);
+	Proyecto findByNombreProyecto(String nombreProyecto) throws NullPointerException;
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyecto.excepciones.BadRequestException;
+import com.proyecto.excepciones.NotFoundExcepcion;
 
 @ControllerAdvice
 public class ExceptionConfig {
@@ -17,9 +18,10 @@ public class ExceptionConfig {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.body(e.getMessage());
 	}
-	
-	public ResponseEntity<?> authenticacion(Exception e){
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+	@ResponseBody
+	@ExceptionHandler(NotFoundExcepcion.class)
+	public ResponseEntity<?> notFoundExcepcion(Exception e){
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 				.body(e.getMessage());
 	}
 }
