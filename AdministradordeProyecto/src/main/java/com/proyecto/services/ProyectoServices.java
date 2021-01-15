@@ -11,22 +11,26 @@ import com.proyecto.repository.ProyectoRepository;
 @Service
 public class ProyectoServices {
 
-	@Autowired
 	private ProyectoRepository proyectoRepository;
-	@Autowired
 	private UsuarioServices usuarioServices;
 
-	public void crearProyecto(Proyecto proyecto) throws Exception {
+	@Autowired
+	public ProyectoServices(ProyectoRepository proyectoRepository, UsuarioServices usuarioServices) {
+		this.proyectoRepository = proyectoRepository;
+		this.usuarioServices = usuarioServices;
+	}
+
+	public void crearProyecto(Proyecto proyecto){
 		proyecto.setFechaInicioProyecto(new Date());
 		proyecto.setFechaFinalProyecto(new Date());
-		proyecto.setUsuario(usuarioServices.getUsuUsuario());
+		proyecto.setUsuario(usuarioServices.getUsuario());
 		proyectoRepository.save(proyecto);
 	}
 
 	public Proyecto proyecto(String nombreProyecto) {
 		try {
 			Proyecto proyecto = proyectoRepository.findByNombreProyecto(nombreProyecto);
-			if (usuarioServices.getUsuUsuario().equals(proyecto.getUsuario())) {
+			if (usuarioServices.getUsuario().equals(proyecto.getUsuario())) {
 				return proyecto;
 			}
 			throw new NotFoundExcepcion("Este Proyecto no te pertenece");

@@ -3,8 +3,11 @@ package com.proyecto.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.proyecto.entidad.Persona;
+import com.proyecto.entidad.Proyecto;
 import com.proyecto.excepciones.BadRequestException;
+import com.proyecto.excepciones.NotFoundExcepcion;
 import com.proyecto.repository.PersonaRepository;
+import com.proyecto.repository.ProyectoRepository;
 import com.proyecto.security.LoginUsuario;
 
 @Service
@@ -12,6 +15,10 @@ public class ValidacionService {
 
 	@Autowired
 	private PersonaRepository personaRepository;
+	@Autowired
+	private ProyectoRepository proyectoRepository;
+	@Autowired
+	private UsuarioServices usuarioServices;
 
 	public boolean isValidarPersona(Persona persona) {
 		if (persona.getNombre() == null || persona.getApellido() == null || persona.getEmail() == null
@@ -62,5 +69,25 @@ public class ValidacionService {
 			return false;
 		}
 		return true;
+	}
+
+	public boolean isValidarProyecto(Proyecto proyecto) {
+		try {
+			Proyecto proyect = proyectoRepository.findByNombreProyecto(proyecto.getNombreProyecto());
+			if (proyecto.getComentario().isBlank() || proyecto.getNombreProyecto().isBlank()
+			/* || proyecto.getFechaFinalProyecto() == null */) {
+				throw new BadRequestException("No se permite valores vacios");
+			} else if (proyecto.getParticipante() < 1) {
+				throw new BadRequestException("El numero minimo de participante es 1");
+			} else if (proyectoRepository.existsByUsuario(usuarioServices.getUsuario())) {
+				throw new NotFoundExcepcion("Este usuario tiene un proyecto en proceso..");
+			}else if (proyect != null){
+				throw new NotFoundExcepcion("Este Nombre de Proyecto ya Existe");
+			}else {
+				return true;
+			}
+		}catch(NullPointerException e) {
+			return true;
+		}
 	}
 }

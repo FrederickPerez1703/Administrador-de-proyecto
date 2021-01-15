@@ -11,17 +11,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.proyecto.entidad.Proyecto;
-import com.proyecto.excepciones.BadRequestException;
 import com.proyecto.services.ProyectoServices;
 import com.proyecto.services.ValidacionService;
 
 @RestController
 @RequestMapping("/Proyecto")
 public class RestAdministradorProyecto {
-	@Autowired
+
 	private ProyectoServices proyectoServices;
-	@Autowired
 	private ValidacionService validacionService;
+
+	@Autowired
+	public RestAdministradorProyecto(ProyectoServices proyectoServices, ValidacionService validacionService) {
+		this.proyectoServices = proyectoServices;
+		this.validacionService = validacionService;
+	}
 
 	@GetMapping("/Home")
 	@ResponseBody
@@ -38,12 +42,11 @@ public class RestAdministradorProyecto {
 	}
 
 	@PostMapping("/CrearProyecto")
-	public ResponseEntity<?> crearProyecto(@RequestBody Proyecto proyecto) {
-		try {
+	public ResponseEntity<?> crearProyecto(@RequestBody Proyecto proyecto){
+		if (validacionService.isValidarProyecto(proyecto)) {
 			proyectoServices.crearProyecto(proyecto);
-		} catch (Exception e) {
-			throw new BadRequestException("Este Usuario ya tiene un proyecto en proceso");
+			return ResponseEntity.status(HttpStatus.CREATED).body("Creado Con exito");
 		}
-		return ResponseEntity.status(HttpStatus.CREATED).body("Creado Con exito");
+		return ResponseEntity.status(HttpStatus.CREATED).body("Error");
 	}
 }

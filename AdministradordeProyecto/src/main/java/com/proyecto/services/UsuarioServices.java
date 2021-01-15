@@ -26,7 +26,7 @@ public class UsuarioServices {
 		this.usuario = usuarioRepository.findByUsuario(usuario);
 	}
 
-	public Usuario getUsuUsuario() {
+	public Usuario getUsuario() {
 		return this.usuario;
 	}
 }
