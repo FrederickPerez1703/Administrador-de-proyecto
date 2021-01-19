@@ -1,5 +1,7 @@
 package com.proyecto.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.proyecto.entidad.Persona;
@@ -73,7 +75,7 @@ public class ValidacionService {
 
 	public boolean isValidarProyecto(Proyecto proyecto) {
 		try {
-			Proyecto proyect = proyectoRepository.findByNombreProyecto(proyecto.getNombreProyecto());
+			Optional<Proyecto> proyect = proyectoRepository.findByNombreProyecto(proyecto.getNombreProyecto());
 			if (proyecto.getComentario().isBlank() || proyecto.getNombreProyecto().isBlank()
 			/* || proyecto.getFechaFinalProyecto() == null */) {
 				throw new BadRequestException("No se permite valores vacios");
@@ -81,7 +83,7 @@ public class ValidacionService {
 				throw new BadRequestException("El numero minimo de participante es 1");
 			} else if (proyectoRepository.existsByUsuario(usuarioServices.getUsuario())) {
 				throw new NotFoundExcepcion("Este usuario tiene un proyecto en proceso..");
-			}else if (proyect != null){
+			}else if (proyect.isPresent()){
 				throw new NotFoundExcepcion("Este Nombre de Proyecto ya Existe");
 			}else {
 				return true;

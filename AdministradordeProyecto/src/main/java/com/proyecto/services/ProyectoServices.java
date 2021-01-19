@@ -1,10 +1,11 @@
 package com.proyecto.services;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.proyecto.entidad.Proyecto;
-import com.proyecto.excepciones.BadRequestException;
 import com.proyecto.excepciones.NotFoundExcepcion;
 import com.proyecto.repository.ProyectoRepository;
 
@@ -20,7 +21,7 @@ public class ProyectoServices {
 		this.usuarioServices = usuarioServices;
 	}
 
-	public void crearProyecto(Proyecto proyecto){
+	public void crearProyecto(Proyecto proyecto) {
 		proyecto.setFechaInicioProyecto(new Date());
 		proyecto.setFechaFinalProyecto(new Date());
 		proyecto.setUsuario(usuarioServices.getUsuario());
@@ -29,13 +30,13 @@ public class ProyectoServices {
 
 	public Proyecto proyecto(String nombreProyecto) {
 		try {
-			Proyecto proyecto = proyectoRepository.findByNombreProyecto(nombreProyecto);
-			if (usuarioServices.getUsuario().equals(proyecto.getUsuario())) {
-				return proyecto;
+			Optional<Proyecto> optionalProyecto = proyectoRepository.findByNombreProyecto(nombreProyecto);
+			if (usuarioServices.getUsuario().equals(optionalProyecto.get().getUsuario())) {
+				return optionalProyecto.get();
 			}
-			throw new NotFoundExcepcion("Este Proyecto no te pertenece");
-		} catch (NullPointerException e) {
-			throw new BadRequestException("Este Proyecto no existe..");
+			throw new NotFoundExcepcion("Este Proyecto no le Pertenece");
+		} catch (NoSuchElementException e) {
+			throw new NotFoundExcepcion("Este Proyecto no Existe");
 		}
 	}
 }
